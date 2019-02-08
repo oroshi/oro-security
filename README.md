@@ -1,3 +1,3 @@
 # Oroshi Security
 
-Security & user administration crate for Oroshi.
+Security crate for Oroshi projects.
