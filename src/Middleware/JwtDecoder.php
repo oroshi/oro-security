@@ -10,7 +10,6 @@ use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
 use Firebase\JWT\JWT;
 use Firebase\JWT\SignatureInvalidException;
-use Middlewares\Utils\Traits\HasResponseFactory;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Http\Server\MiddlewareInterface;
@@ -19,8 +18,6 @@ use Psr\Log\LoggerInterface;
 
 class JwtDecoder implements MiddlewareInterface
 {
-    use HasResponseFactory;
-
     const ATTR_JWT = '_Host-_jwt';
 
     const ATTR_XSRF = '_Host-_xsrf';

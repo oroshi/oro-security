@@ -6,24 +6,24 @@ namespace Oro\Security\Api\User;
 
 use Oro\Security\Api\MessageResponder;
 use Oro\Security\Api\UserActionTrait;
+use Oro\Security\Middleware\UserHandler;
 use Oroshi\Core\Middleware\ActionHandler;
 use Oroshi\Core\Middleware\Action\ActionInterface;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Oroshi\Core\Middleware\JwtDecoder;
 
 final class ResourceAction implements ActionInterface
 {
     use UserActionTrait;
 
-    const ATTR_PAYLOAD = '@user';
-
     public function __invoke(ServerRequestInterface $request): ServerRequestInterface
     {
-        $payload = $request->getAttribute(self::ATTR_PAYLOAD);
-        $params = [':user' => $payload['_user']];
+        $user = $request->getAttribute(UserHandler::ATTR_USER);
 
-        return $request->withAttribute(ActionHandler::ATTR_RESPONDER, [ResourceResponder::class, $params]);
+        return $request->withAttribute(
+            ActionHandler::ATTR_RESPONDER,
+            [ResourceResponder::class, [':user' => $user]]
+        );
     }
 
     public function handleError(ServerRequestInterface $request): ServerRequestInterface
