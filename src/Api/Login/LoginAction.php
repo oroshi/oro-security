@@ -21,7 +21,6 @@ final class LoginAction implements ActionInterface
         $payload = array_values($request->getAttribute(self::ATTR_PAYLOAD));
 
         try {
-            //@todo consider ignoring rapid logins by checking auth token expiry
             if ($user = $this->userService->authenticate(...$payload)) {
                 $this->userService->login($user);
                 $responder = LoginResponder::class;

@@ -20,7 +20,7 @@ final class LogoutAction implements ActionInterface
         try {
             // Reset auth token on logout
             if ($jwt = $request->getAttribute(JwtDecoder::ATTR_JWT)) {
-                $this->userService->logout($jwt->data->id);
+                $this->userService->logout($jwt->uid);
             }
         } catch (\Exception $error) {
             // Continue if logout is invalid for any reason

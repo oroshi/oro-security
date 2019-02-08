@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Oro\Security\Middleware;
 
 use Middlewares\Utils\Traits\HasResponseFactory;
+use Oro\Security\ReadModel\Standard\Users;
 use Oroshi\Core\Middleware\RoutingHandler;
 use Oroshi\Core\Middleware\Action\ActionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -17,28 +18,39 @@ class AuthenticationHandler implements MiddlewareInterface
 {
     use HasResponseFactory;
 
+    const ATTR_USER = '_user';
+
     /** @var LoggerInterface */
     private $logger;
 
-    public function __construct(LoggerInterface $logger)
+    /** @var Users */
+    private $users;
+
+    public function __construct(LoggerInterface $logger, Users $users)
     {
         $this->logger = $logger;
+        $this->users = $users;
     }
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $jwt = $request->getAttribute(JwtDecoder::ATTR_JWT);
-        $xsrfToken = $request->getAttribute(JwtDecoder::ATTR_XSRF);
-
-        if ($jwt && $jwt->xsrf !== $xsrfToken) {
-            return $this->createResponse(401, 'Unauthorized XSRF');
+        $user = null;
+        if ($this->isSecure($request)) {
+            $jwt = $request->getAttribute(JwtDecoder::ATTR_JWT);
+            $xsrfToken = $request->getAttribute(JwtDecoder::ATTR_XSRF);
+            
+            if (!$jwt || !$jwt->uid) {
+                return $this->createResponse(403);
+            }
+            if ($jwt->xsrf !== $xsrfToken) {
+                return $this->createResponse(401, 'Unauthorized XSRF');
+            }
+            if (!$user = $this->users->byId($jwt->uid)) {
+                return $this->createResponse(403, 'User not found');
+            }
         }
 
-        if (!$jwt && $this->isSecure($request)) {
-            return $this->createResponse(403);
-        }
-
-        return $handler->handle($request);
+        return $handler->handle($request->withAttribute(self::ATTR_USER, $user));
     }
 
     private function isSecure(ServerRequestInterface $request): bool

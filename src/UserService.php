@@ -106,13 +106,7 @@ final class UserService
             'iat' => time(),
             'jti' => (string)$authToken->getId(),
             'xsrf' => (string)$authToken->getToken(),
-            'data' => [
-                'id' => (string)$user->getAggregateId(),
-                'username' => (string)$user->getUsername(),
-                'role' => (string)$user->getRole(),
-                'locale' => (string)$user->getLocale(),
-                'state' => (string)$user->getState()
-            ]
+            'uid' => (string)$user->getAggregateId()
         ], $secretKey);
     }
 

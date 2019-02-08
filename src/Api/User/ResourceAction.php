@@ -6,7 +6,7 @@ namespace Oro\Security\Api\User;
 
 use Oro\Security\Api\MessageResponder;
 use Oro\Security\Api\UserActionTrait;
-use Oro\Security\Middleware\UserHandler;
+use Oro\Security\Middleware\AuthenticationHandler;
 use Oroshi\Core\Middleware\ActionHandler;
 use Oroshi\Core\Middleware\Action\ActionInterface;
 use Psr\Http\Message\ResponseInterface;
@@ -18,7 +18,7 @@ final class ResourceAction implements ActionInterface
 
     public function __invoke(ServerRequestInterface $request): ServerRequestInterface
     {
-        $user = $request->getAttribute(UserHandler::ATTR_USER);
+        $user = $request->getAttribute(AuthenticationHandler::ATTR_USER);
 
         return $request->withAttribute(
             ActionHandler::ATTR_RESPONDER,
