@@ -105,7 +105,7 @@ final class UserService
             'nbf' => time(),
             'iat' => time(),
             'jti' => (string)$authToken->getId(),
-            'csrf' => (string)$authToken->getToken(),
+            'xsrf' => (string)$authToken->getToken(),
             'data' => [
                 'id' => (string)$user->getAggregateId(),
                 'username' => (string)$user->getUsername(),
