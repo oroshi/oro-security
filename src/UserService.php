@@ -99,8 +99,8 @@ final class UserService
         $secretKey = $this->config->get('crates.oro.security.jwt.secret', 'oroshi');
 
         return JWT::encode([
-            'iss' => $this->config->get('project.name'),
-            'aud' => $this->config->get('project.name'),
+            'iss' => $this->config->get('crates.oro.security.jwt.issuer', 'oroshi'),
+            'aud' => $this->config->get('crates.oro.security.jwt.audience', 'oroshi'),
             'exp' => $this->getTokenExpiryTime(),
             'nbf' => time(),
             'iat' => time(),
