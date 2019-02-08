@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Oro\Security\Api\Logout;
 
 use Dflydev\FigCookies\FigResponseCookies;
-use Oroshi\Core\Middleware\JwtDecoder;
+use Oro\Security\Middleware\JwtDecoder;
 use Oroshi\Core\Middleware\Action\ResponderInterface;
 use Oroshi\Core\Middleware\Action\ResponderTrait;
 use Psr\Http\Message\ResponseInterface;
@@ -20,7 +20,7 @@ final class LogoutResponder implements ResponderInterface
     {
         $response = FigResponseCookies::expire(
             new EmptyResponse,
-            JwtDecoder::ATTR_TOKEN
+            JwtDecoder::ATTR_JWT
         );
 
         $response = FigResponseCookies::expire(

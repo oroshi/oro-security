@@ -27,7 +27,7 @@ class AuthenticationHandler implements MiddlewareInterface
 
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
-        $jwt = $request->getAttribute(JwtDecoder::ATTR_TOKEN);
+        $jwt = $request->getAttribute(JwtDecoder::ATTR_JWT);
         $xsrfToken = $request->getAttribute(JwtDecoder::ATTR_XSRF);
 
         if ($jwt && $jwt->xsrf !== $xsrfToken) {

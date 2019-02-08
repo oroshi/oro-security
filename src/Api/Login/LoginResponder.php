@@ -9,8 +9,8 @@ use Dflydev\FigCookies\FigResponseCookies;
 use Dflydev\FigCookies\SetCookie;
 use Dflydev\FigCookies\Modifier\SameSite;
 use Firebase\JWT\JWT;
+use Oro\Security\Middleware\JwtDecoder;
 use Oroshi\Core\Middleware\ActionHandler;
-use Oroshi\Core\Middleware\JwtDecoder;
 use Oroshi\Core\Middleware\Action\ResponderInterface;
 use Oroshi\Core\Middleware\Action\ResponderTrait;
 use Psr\Http\Message\ResponseInterface;
@@ -44,7 +44,7 @@ final class LoginResponder implements ResponderInterface
          */
         $response = FigResponseCookies::set(
             new EmptyResponse,
-            SetCookie::create(JwtDecoder::ATTR_TOKEN)
+            SetCookie::create(JwtDecoder::ATTR_JWT)
                 ->withValue($this->jwt)
                 ->withExpires(gmdate('D, d M Y H:i:s T', $decodedToken->exp))
                 ->withPath('/')

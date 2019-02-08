@@ -6,9 +6,9 @@ namespace Oro\Security\Api\Logout;
 
 use Oro\Security\Api\MessageResponder;
 use Oro\Security\Api\UserActionTrait;
+use Oro\Security\Middleware\JwtDecoder;
 use Oroshi\Core\Middleware\Action\ActionInterface;
 use Oroshi\Core\Middleware\ActionHandler;
-use Oroshi\Core\Middleware\JwtDecoder;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class LogoutAction implements ActionInterface
@@ -19,7 +19,7 @@ final class LogoutAction implements ActionInterface
     {
         try {
             // Reset auth token on logout
-            if ($jwt = $request->getAttribute(JwtDecoder::ATTR_TOKEN)) {
+            if ($jwt = $request->getAttribute(JwtDecoder::ATTR_JWT)) {
                 $this->userService->logout($jwt->data->id);
             }
         } catch (\Exception $error) {

@@ -21,7 +21,7 @@ class JwtDecoder implements MiddlewareInterface
 {
     use HasResponseFactory;
 
-    const ATTR_TOKEN = '_Host-_jwt';
+    const ATTR_JWT = '_Host-_jwt';
 
     const ATTR_XSRF = '_Host-_xsrf';
 
@@ -40,26 +40,26 @@ class JwtDecoder implements MiddlewareInterface
     public function process(ServerRequestInterface $request, RequestHandlerInterface $handler): ResponseInterface
     {
         $cookieParams = $request->getCookieParams();
-        $encodedToken = $cookieParams[self::ATTR_TOKEN]
+        $encodedJwt = $cookieParams[self::ATTR_JWT]
             ?? $this->parseAuthHeader($request->getHeaderLine('Authorization'));
         $xsrfToken = $cookieParams[self::ATTR_XSRF] ?? $request->getHeaderLine('X-XSRF-TOKEN');
 
-        $jwt = null;
-        if ($encodedToken) {
-            $jwt = $this->decodeToken($encodedToken);
+        $decodedJwt = null;
+        if ($encodedJwt) {
+            $decodedJwt = $this->decodeJwt($encodedJwt);
         }
 
         return $handler->handle($request
-            ->withAttribute(self::ATTR_TOKEN, $jwt)
+            ->withAttribute(self::ATTR_JWT, $decodedJwt)
             ->withAttribute(self::ATTR_XSRF, $xsrfToken)
         );
     }
 
-    private function decodeToken(string $token): ?object
+    private function decodeJwt(string $jwt): ?object
     {
         $secretKey = $this->configProvider->get('crates.oro.security.jwt.secret', 'oroshi');
         try {
-            return JWT::decode($token, $secretKey, ['HS256']);
+            return JWT::decode($jwt, $secretKey, ['HS256']);
         } catch (BeforeValidException $err) {
             return null;
         } catch (ExpiredException $err) {
