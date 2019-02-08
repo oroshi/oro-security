@@ -25,7 +25,7 @@ final class ResourceResponder implements ResponderInterface
 
     public function respondToJson(ServerRequestInterface $request): ResponseInterface
     {
-        return new JsonResponse($this->user);
+        return new JsonResponse($this->user->toNative());
     }
 
     public function respondToHtml(ServerRequestInterface $request): ResponseInterface

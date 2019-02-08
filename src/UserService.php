@@ -96,7 +96,7 @@ final class UserService
     public function generateJWT(User $user): string
     {
         $authToken = $user->getAuthToken();
-        $secretKey = $this->config->get('project.jwt.secret', 'oroshi');
+        $secretKey = $this->config->get('crates.oro.security.jwt.secret', 'oroshi');
 
         return JWT::encode([
             'iss' => $this->config->get('project.name'),

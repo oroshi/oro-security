@@ -7,8 +7,9 @@
     "prefer-stable": true,
     "minimum-stability": "dev",
     "require": {
+        "dflydev/fig-cookies": "^2.0",
         "egulias/email-validator": "^2.1",
-        "dflydev/fig-cookies": "^2.0"
+        "firebase/php-jwt": "^v5.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.4",
