@@ -37,22 +37,33 @@ final class LoginResponder implements ResponderInterface
     {
         $payload = explode('.', $this->jwt)[1];
         $decodedToken = JWT::jsonDecode(JWT::urlsafeB64Decode($payload));
-        $setCookie = SetCookie::create(JwtDecoder::ATTR_TOKEN)
-            ->withValue($this->jwt)
-            ->withExpires(gmdate('D, d M Y H:i:s T', $decodedToken->exp))
-            ->withPath('/')
-            ->withDomain($this->config->get('project.cors.host', 'localhost'))
-            ->withSecure($this->config->get('project.cors.scheme') === 'https')
-            ->withHttpOnly(true)
-            ->withSameSite(SameSite::strict());
 
-        return FigResponseCookies::set(
-            new EmptyResponse(
-                self::STATUS_NO_CONTENT,
-                ['X-XSRF-TOKEN' => $decodedToken->xsrf]
-            ),
-            $setCookie
+        /*
+         * Use an xsrf cookie so the lifetime of the token matches the jwt. Also the
+         * _Host- cookie name prefix requires that domain be excluded and path be '/'.
+         */
+        $response = FigResponseCookies::set(
+            new EmptyResponse,
+            SetCookie::create(JwtDecoder::ATTR_TOKEN)
+                ->withValue($this->jwt)
+                ->withExpires(gmdate('D, d M Y H:i:s T', $decodedToken->exp))
+                ->withPath('/')
+                ->withSecure($this->config->get('project.cors.scheme') === 'https')
+                ->withHttpOnly(true)
+                ->withSameSite(SameSite::strict())
         );
+
+        $response = FigResponseCookies::set(
+            $response,
+            SetCookie::create(JwtDecoder::ATTR_XSRF)
+                ->withValue($decodedToken->xsrf)
+                ->withExpires(gmdate('D, d M Y H:i:s T', $decodedToken->exp))
+                ->withPath('/')
+                ->withSecure($this->config->get('project.cors.scheme') === 'https')
+                ->withSameSite(SameSite::strict())
+        );
+
+        return $response;
     }
 
     public function respondToHtml(ServerRequestInterface $request): ResponseInterface

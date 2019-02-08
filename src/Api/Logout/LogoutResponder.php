@@ -18,10 +18,17 @@ final class LogoutResponder implements ResponderInterface
 
     public function respondToJson(ServerRequestInterface $request): ResponseInterface
     {
-        return FigResponseCookies::expire(
-            new EmptyResponse(self::STATUS_NO_CONTENT),
+        $response = FigResponseCookies::expire(
+            new EmptyResponse,
             JwtDecoder::ATTR_TOKEN
         );
+
+        $response = FigResponseCookies::expire(
+            $response,
+            JwtDecoder::ATTR_XSRF
+        );
+
+        return $response;
     }
 
     public function respondToHtml(ServerRequestInterface $request): ResponseInterface
