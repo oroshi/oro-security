@@ -1,0 +1,14 @@
+[
+  {
+    "@type": "Oro\\Security\\User\\Register\\RegisterUser",
+    "values": {
+      "aggregateId": "oro.security.user-11ee4239-3e82-38ee-8f0b-e59ce9e6cbe0",
+      "username": "administrator",
+      "email": "administrator@oroshi.dev",
+      "role": "administrator",
+      "locale": "en",
+      "passwordHash": "$2y$10$2.zwf5hRsQSj15eCt4Bw6e/TBvqgMlRsB2Qi0PUsDN6U47zNtqTLK",
+      "authTokenExpiresAt": "2030-01-01T00:00:00.000000+00:00"
+    }
+  }
+]

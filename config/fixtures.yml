@@ -1,0 +1,11 @@
+fixture_loaders:
+  oro.security.user:
+    class: Oroshi\Core\Fixture\FlysystemFixtureLoader
+    connector: oro.security.filesystem
+    settings:
+      location: fixture://user
+
+fixture_targets:
+  oro.security.user:
+    enabled: true
+    fixture_loader: oro.security.user

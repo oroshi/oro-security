@@ -1,0 +1,8 @@
+oroshi:
+  command_router:
+    commands:
+      oro.security.user:
+        Oro\Security\User\Register\RegisterUser: Oro\Security\CommandHandler\RegisterUserHandler
+        Oro\Security\User\Activate\ActivateUser: Oro\Security\CommandHandler\ActivateUserHandler
+        Oro\Security\User\Login\LoginUser: Oro\Security\CommandHandler\LoginUserHandler
+        Oro\Security\User\Logout\LogoutUser: Oro\Security\CommandHandler\LogoutUserHandler
