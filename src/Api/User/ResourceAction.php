@@ -16,13 +16,26 @@ final class ResourceAction implements ActionInterface
 {
     use UserActionTrait;
 
+    const ATTR_PAYLOAD = '@resource';
+
     public function __invoke(ServerRequestInterface $request): ServerRequestInterface
     {
-        $user = $request->getAttribute(AuthenticationHandler::ATTR_USER);
+        $payload = $request->getAttribute(self::ATTR_PAYLOAD);
+        $user = $payload['userId'] === 'me'
+            ? $request->getAttribute(AuthenticationHandler::ATTR_USER)
+            : $payload['resource'];
 
         return $request->withAttribute(
             ActionHandler::ATTR_RESPONDER,
             [ResourceResponder::class, [':user' => $user]]
+        );
+    }
+
+    public function registerValidator(ServerRequestInterface $request): ServerRequestInterface
+    {
+        return $request->withAttribute(
+            ActionHandler::ATTR_VALIDATOR,
+            [ResourceValidator::class, [':exportTo' => self::ATTR_PAYLOAD]]
         );
     }
 
