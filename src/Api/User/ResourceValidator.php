@@ -17,7 +17,7 @@ final class ResourceValidator implements ValidatorInterface
     use ValidatorTrait;
 
     /** @var string */
-    private const TOKEN = 'userId';
+    const USER_ID = 'userId';
 
     /** @var LoggerInterface */
     private $logger;
@@ -46,8 +46,8 @@ final class ResourceValidator implements ValidatorInterface
     public function __invoke(ServerRequestInterface $request): ServerRequestInterface
     {
         $errors = [];
-        $payload = $this->validateAttributes([self::TOKEN], $request, $errors);
-        $userId = $payload[self::TOKEN];
+        $payload = $this->validateAttributes([self::USER_ID], $request, $errors);
+        $userId = $payload[self::USER_ID];
 
         $user = $userId && $userId !== ResourceAction::USER_ME
             ? $this->users->byId($userId)

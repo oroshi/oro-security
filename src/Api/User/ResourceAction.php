@@ -16,14 +16,15 @@ final class ResourceAction implements ActionInterface
 {
     use UserActionTrait;
 
-    const ATTR_PAYLOAD = '@resource';
-
     const USER_ME = 'me';
+
+    const ATTR_PAYLOAD = '@resource';
 
     public function __invoke(ServerRequestInterface $request): ServerRequestInterface
     {
         $payload = $request->getAttribute(self::ATTR_PAYLOAD);
-        $user = $payload['userId'] === self::USER_ME
+
+        $user = $payload[ResourceValidator::USER_ID] === self::USER_ME
             ? $request->getAttribute(AuthenticationHandler::ATTR_USER)
             : $payload['user'];
 
