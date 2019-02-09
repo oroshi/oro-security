@@ -47,27 +47,24 @@ final class ResourceValidator implements ValidatorInterface
     {
         $errors = [];
         $payload = $this->validateAttributes([self::TOKEN], $request, $errors);
+        $userId = $payload[self::TOKEN];
 
-        $resource = $payload[self::TOKEN] !== 'me'
-            ? $this->users->byId($payload[self::TOKEN])
+        $user = $userId && $userId !== ResourceAction::USER_ME
+            ? $this->users->byId($userId)
             : null;
 
         return empty($errors)
-            ? $request->withAttribute($this->exportTo, $payload + ['resource' => $resource])
+            ? $request->withAttribute($this->exportTo, $payload + ['user' => $user])
             : $request->withAttribute($this->exportErrors, $errors);
     }
 
     private function validateUserId(string $name, $value): string
     {
-        if ($value !== 'me') {
-            Assert::lazy()
-                ->that($value, $name)
-                ->tryAll()
-                ->string('Must be a string.')
-                ->regex(
-                    '#^(?:\w+\.){2}\w+-[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$#i',
-                    'Invalid format.'
-                )->verifyNow();
+        if ($value !== ResourceAction::USER_ME) {
+            Assert::that($value, null, $name)->regex(
+                '#^(?:\w+\.){2}\w+-[0-9a-f]{8}-(?:[0-9a-f]{4}-){3}[0-9a-f]{12}$#i',
+                'Invalid format.'
+            );
         }
 
         return $value;

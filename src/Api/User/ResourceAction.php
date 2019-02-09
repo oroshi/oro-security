@@ -18,12 +18,14 @@ final class ResourceAction implements ActionInterface
 
     const ATTR_PAYLOAD = '@resource';
 
+    const USER_ME = 'me';
+
     public function __invoke(ServerRequestInterface $request): ServerRequestInterface
     {
         $payload = $request->getAttribute(self::ATTR_PAYLOAD);
-        $user = $payload['userId'] === 'me'
+        $user = $payload['userId'] === self::USER_ME
             ? $request->getAttribute(AuthenticationHandler::ATTR_USER)
-            : $payload['resource'];
+            : $payload['user'];
 
         return $request->withAttribute(
             ActionHandler::ATTR_RESPONDER,
