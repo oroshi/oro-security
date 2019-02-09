@@ -59,9 +59,4 @@ final class LoginAction implements ActionInterface
             ]]
         );
     }
-
-    public function isSecure(): bool
-    {
-        return false;
-    }
 }

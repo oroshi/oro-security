@@ -24,7 +24,7 @@ trait UserActionTrait
 
     public function isSecure(): bool
     {
-        return true;
+        return false;
     }
 
     public function registerValidator(ServerRequestInterface $request): ServerRequestInterface

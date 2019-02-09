@@ -42,9 +42,4 @@ final class LogoutAction implements ActionInterface
             ]]
         );
     }
-
-    public function isSecure(): bool
-    {
-        return false;
-    }
 }

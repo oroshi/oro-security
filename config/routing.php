@@ -13,5 +13,5 @@ $map->attach("$cratePrefix.", $mount, function ($map) {
     $map->post('user.logout', '/logout', LogoutAction::class);
     $map->post('user.register', '/register', RegisterAction::class);
     $map->get('user.activate', '/activate', ActivateAction::class)->allows(['POST']);
-    $map->get('user.resource', '/me', ResourceAction::class);
+    $map->get('user.resource', '/users/{userId}', ResourceAction::class);
 });

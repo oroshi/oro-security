@@ -58,9 +58,4 @@ final class RegisterAction implements ActionInterface
             ]]
         );
     }
-
-    public function isSecure(): bool
-    {
-        return false;
-    }
 }
