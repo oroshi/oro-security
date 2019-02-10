@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Oro\Security\ValueObject;
 
 use Assert\Assertion;
-use Daikon\Entity\ValueObject\ValueObjectInterface;
+use Daikon\Interop\ValueObjectInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 
 final class PasswordHash implements ValueObjectInterface

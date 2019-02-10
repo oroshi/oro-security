@@ -10,9 +10,10 @@ use Daikon\Entity\Entity\Entity;
 use Daikon\Entity\ValueObject\Email;
 use Daikon\Entity\ValueObject\IntValue;
 use Daikon\Entity\ValueObject\Text;
-use Daikon\Entity\ValueObject\ValueObjectInterface;
 use Daikon\EventSourcing\Aggregate\AggregateId;
+use Daikon\EventSourcing\Aggregate\AggregateRevision;
 use Daikon\EventSourcing\Aggregate\Event\DomainEventInterface;
+use Daikon\Interop\ValueObjectInterface;
 use Oro\Security\ValueObject\PasswordHash;
 use Oro\Security\ValueObject\UserRole;
 use Oro\Security\ValueObject\UserState;
@@ -23,8 +24,8 @@ final class UserProperties extends Entity
     public static function getAttributeMap(): AttributeMap
     {
         return new AttributeMap([
-            Attribute::define('aggregateId', Text::class),
-            Attribute::define('aggregateRevision', IntValue::class),
+            Attribute::define('aggregateId', AggregateId::class),
+            Attribute::define('aggregateRevision', AggregateRevision::class),
             Attribute::define('username', Text::class),
             Attribute::define('email', Email::class),
             Attribute::define('role', UserRole::class),
@@ -40,12 +41,12 @@ final class UserProperties extends Entity
         return $this->getAggregateId();
     }
 
-    public function getAggregateId(): Text
+    public function getAggregateId(): AggregateId
     {
         return $this->get('aggregateId');
     }
 
-    public function getAggregateRevision(): IntValue
+    public function getAggregateRevision(): AggregateRevision
     {
         return $this->get('aggregateRevision');
     }

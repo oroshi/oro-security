@@ -8,7 +8,7 @@ use Daikon\Entity\Entity\Attribute;
 use Daikon\Entity\Entity\AttributeMap;
 use Daikon\Entity\Entity\Entity;
 use Daikon\Entity\ValueObject\Uuid;
-use Daikon\Entity\ValueObject\ValueObjectInterface;
+use Daikon\Interop\ValueObjectInterface;
 use Oro\Security\ValueObject\RandomToken;
 
 final class VerifyToken extends Entity

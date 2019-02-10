@@ -35,7 +35,10 @@ final class UserRepository implements RepositoryInterface
 
     public function persist(ProjectionInterface $projection): bool
     {
-        return $this->storageAdapter->write($projection->getAggregateId(), $projection->toNative());
+        return $this->storageAdapter->write(
+            (string)$projection->getAggregateId(),
+            $projection->toNative()
+        );
     }
 
     public function makeProjection(): ProjectionInterface

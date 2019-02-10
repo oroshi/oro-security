@@ -8,6 +8,8 @@ use Assert\Assertion;
 use Daikon\Entity\ValueObject\Email;
 use Daikon\Entity\ValueObject\Text;
 use Daikon\Entity\ValueObject\ValueObjectInterface;
+use Daikon\EventSourcing\Aggregate\AggregateIdInterface;
+use Daikon\EventSourcing\Aggregate\AggregateRevision;
 use Daikon\EventSourcing\Aggregate\Event\DomainEventInterface;
 use Daikon\ReadModel\Projection\EventHandlerTrait;
 use Daikon\ReadModel\Projection\ProjectionInterface;
@@ -43,14 +45,14 @@ final class User implements ProjectionInterface
         $this->userProps = $userProps;
     }
 
-    public function getAggregateId(): string
+    public function getAggregateId(): AggregateIdInterface
     {
-        return $this->userProps->getAggregateId()->toNative();
+        return $this->userProps->getAggregateId();
     }
 
-    public function getAggregateRevision(): int
+    public function getAggregateRevision(): AggregateRevision
     {
-        return $this->userProps->getAggregateRevision()->toNative();
+        return $this->userProps->getAggregateRevision();
     }
 
     public function getUsername(): Text

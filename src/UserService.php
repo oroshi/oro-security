@@ -79,7 +79,7 @@ final class UserService
     public function login(User $user): void
     {
         $loginUser = LoginUser::fromNative([
-            'aggregateId' => $user->getAggregateId(),
+            'aggregateId' => (string)$user->getAggregateId(),
             'authTokenExpiresAt' => gmdate(Timestamp::NATIVE_FORMAT, $this->getTokenExpiryTime())
         ]);
         $this->dispatch($loginUser);
