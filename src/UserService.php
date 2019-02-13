@@ -112,9 +112,7 @@ final class UserService
 
     private function dispatch(CommandInterface $command): void
     {
-        if (!$this->messageBus->publish($command, self::CHAN_COMMANDS)) {
-            throw new \RuntimeException(get_class($command).' was not handled by message bus.');
-        }
+        $this->messageBus->publish($command, self::CHAN_COMMANDS);
     }
 
     private function getTokenExpiryTime()
