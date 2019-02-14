@@ -7,10 +7,8 @@ namespace Oro\Security\ReadModel\Standard;
 use Assert\Assertion;
 use Daikon\Entity\ValueObject\Email;
 use Daikon\Entity\ValueObject\Text;
-use Daikon\Entity\ValueObject\ValueObjectInterface;
 use Daikon\EventSourcing\Aggregate\AggregateIdInterface;
 use Daikon\EventSourcing\Aggregate\AggregateRevision;
-use Daikon\EventSourcing\Aggregate\Event\DomainEventInterface;
 use Daikon\ReadModel\Projection\EventHandlerTrait;
 use Daikon\ReadModel\Projection\ProjectionInterface;
 use Oro\Security\Entity\AuthToken;
@@ -102,13 +100,13 @@ final class User implements ProjectionInterface
         return $data;
     }
 
-    private function whenUserWasRegistered(UserWasRegistered $userRegistered)
+    private function whenUserWasRegistered(UserWasRegistered $userRegistered): void
     {
         $this->userProps = UserProperties::fromNative($userRegistered->toNative())
             ->withState(UserState::fromNative(UserState::UNVERIFIED));
     }
 
-    private function whenAuthTokenWasAdded(AuthTokenWasAdded $tokenAdded)
+    private function whenAuthTokenWasAdded(AuthTokenWasAdded $tokenAdded): void
     {
         $this->userProps = $this->userProps
             ->adaptRevision($tokenAdded)

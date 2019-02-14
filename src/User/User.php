@@ -74,12 +74,12 @@ final class User implements AggregateRootInterface
             ->reflectThat(AuthTokenWasReset::fromCommand($logoutUser));
     }
 
-    protected function whenUserWasRegistered(UserWasRegistered $userRegistered)
+    protected function whenUserWasRegistered(UserWasRegistered $userRegistered): void
     {
         $this->currentState = UserState::fromNative(UserState::UNVERIFIED);
     }
 
-    protected function whenAuthTokenWasAdded(AuthTokenWasAdded $tokenAdded)
+    protected function whenAuthTokenWasAdded(AuthTokenWasAdded $tokenAdded): void
     {
         $this->authToken = AuthToken::fromNative([
             'id' => (string)$tokenAdded->getId(),
@@ -88,7 +88,7 @@ final class User implements AggregateRootInterface
         ]);
     }
 
-    protected function whenVerifyTokenWasAdded(VerifyTokenWasAdded $tokenAdded)
+    protected function whenVerifyTokenWasAdded(VerifyTokenWasAdded $tokenAdded): void
     {
         $this->verificationToken = VerifyToken::fromNative([
             'id' => (string)$tokenAdded->getId(),
@@ -96,22 +96,22 @@ final class User implements AggregateRootInterface
         ]);
     }
 
-    protected function whenUserWasActivated(UserWasActivated $userActivated)
+    protected function whenUserWasActivated(UserWasActivated $userActivated): void
     {
         $this->currentState = UserState::fromNative(UserState::ACTIVATED);
         $this->verificationToken = null;
     }
 
-    protected function whenUserWasLoggedOut(UserWasLoggedOut $userLoggedOut)
+    protected function whenUserWasLoggedOut(UserWasLoggedOut $userLoggedOut): void
     {
     }
 
-    protected function whenUserWasLoggedIn(UserWasLoggedIn $userLoggedIn)
+    protected function whenUserWasLoggedIn(UserWasLoggedIn $userLoggedIn): void
     {
         $this->authToken = $this->authToken->withExpiresAt($userLoggedIn->getAuthTokenExpiresAt());
     }
 
-    protected function whenAuthTokenWasReset(AuthTokenWasReset $tokenReset)
+    protected function whenAuthTokenWasReset(AuthTokenWasReset $tokenReset): void
     {
         $this->authToken = AuthToken::fromNative([
             'id' => (string)$tokenReset->getId(),

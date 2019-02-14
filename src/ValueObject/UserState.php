@@ -39,7 +39,7 @@ final class UserState implements ValueObjectInterface
 
     public function equals(ValueObjectInterface $otherValue): bool
     {
-        Assertion::isInstanceOf($otherValue, UserState::class);
+        Assertion::isInstanceOf($otherValue, self::class);
         return $this->toNative() === $otherValue->toNative();
     }
 
