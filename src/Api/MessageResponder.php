@@ -31,7 +31,8 @@ final class MessageResponder implements ResponderInterface
     {
         $errors = $request->getAttribute(ActionHandler::ATTR_ERRORS, []);
         if (!empty($errors)) {
-            $errorCode = $request->getAttribute(ActionHandler::ATTR_ERROR_CODE, self::STATUS_UNPROCESSABLE_ENTITY);
+            $errorCode = $request->getAttribute(ActionHandler::ATTR_ERROR_CODE)
+                ?? self::STATUS_UNPROCESSABLE_ENTITY;
         }
 
         return new JsonResponse(
