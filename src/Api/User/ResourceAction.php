@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace Oro\Security\Api\User;
 
-use Oro\Security\Api\MessageResponder;
 use Oro\Security\Api\UserActionTrait;
-use Oro\Security\Middleware\AuthenticationHandler;
 use Oroshi\Core\Middleware\ActionHandler;
 use Oroshi\Core\Middleware\Action\ActionInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class ResourceAction implements ActionInterface
 {
     use UserActionTrait;
-
-    const USER_ME = 'me';
 
     const ATTR_PAYLOAD = '@resource';
 
@@ -24,13 +19,9 @@ final class ResourceAction implements ActionInterface
     {
         $payload = $request->getAttribute(self::ATTR_PAYLOAD);
 
-        $user = $payload[ResourceValidator::USER_ID] === self::USER_ME
-            ? $request->getAttribute(AuthenticationHandler::ATTR_USER)
-            : $payload['user'];
-
         return $request->withAttribute(
             ActionHandler::ATTR_RESPONDER,
-            [ResourceResponder::class, [':user' => $user]]
+            [ResourceResponder::class, [':user' => $payload['user']]]
         );
     }
 
@@ -39,17 +30,6 @@ final class ResourceAction implements ActionInterface
         return $request->withAttribute(
             ActionHandler::ATTR_VALIDATOR,
             [ResourceValidator::class, [':exportTo' => self::ATTR_PAYLOAD]]
-        );
-    }
-
-    public function handleError(ServerRequestInterface $request): ServerRequestInterface
-    {
-        return $request->withAttribute(
-            ActionHandler::ATTR_RESPONDER,
-            [MessageResponder::class, [
-                ':message' => 'Invalid request data.',
-                ':statusCode' => self::STATUS_UNPROCESSABLE_ENTITY
-            ]]
         );
     }
 

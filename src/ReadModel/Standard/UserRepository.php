@@ -19,7 +19,7 @@ final class UserRepository implements RepositoryInterface
         $this->storageAdapter = $storageAdapter;
     }
 
-    public function findById(string $identifier): ProjectionInterface
+    public function findById(string $identifier): ?ProjectionInterface
     {
         return $this->storageAdapter->read($identifier);
     }

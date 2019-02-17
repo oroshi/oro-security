@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Oro\Security\Api\Logout;
 
-use Oro\Security\Api\MessageResponder;
 use Oro\Security\Api\UserActionTrait;
 use Oro\Security\Middleware\JwtDecoder;
 use Oroshi\Core\Middleware\Action\ActionInterface;
@@ -29,17 +28,6 @@ final class LogoutAction implements ActionInterface
         return $request->withAttribute(
             ActionHandler::ATTR_RESPONDER,
             [LogoutResponder::class, []]
-        );
-    }
-
-    public function handleError(ServerRequestInterface $request): ServerRequestInterface
-    {
-        return $request->withAttribute(
-            ActionHandler::ATTR_RESPONDER,
-            [MessageResponder::class, [
-                ':message' => 'Invalid request data.',
-                ':statusCode' => self::STATUS_UNPROCESSABLE_ENTITY
-            ]]
         );
     }
 }

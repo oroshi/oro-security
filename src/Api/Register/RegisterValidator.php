@@ -42,14 +42,19 @@ final class RegisterValidator implements ValidatorInterface
     /** @var string */
     private $exportErrors;
 
+    /** @var string */
+    private $exportErrorCode;
+
     public function __construct(
         LoggerInterface $logger,
         string $exportTo,
-        string $exportErrors = ActionHandler::ATTR_ERRORS
+        string $exportErrors = ActionHandler::ATTR_ERRORS,
+        string $exportErrorCode = ActionHandler::ATTR_ERROR_CODE
     ) {
         $this->logger = $logger;
         $this->exportTo = $exportTo;
         $this->exportErrors = $exportErrors;
+        $this->exportErrorCode = $exportErrorCode;
     }
 
     public function __invoke(ServerRequestInterface $request): ServerRequestInterface
@@ -59,7 +64,8 @@ final class RegisterValidator implements ValidatorInterface
 
         return empty($errors)
             ? $request->withAttribute($this->exportTo, $payload)
-            : $request->withAttribute($this->exportErrors, $errors);
+            : $request->withAttribute($this->exportErrors, $errors)
+                ->withAttribute($this->exportErrorCode, $errorCode ?? null);
     }
 
     private function validateUsername(string $name, $value): string

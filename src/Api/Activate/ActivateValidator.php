@@ -32,33 +32,38 @@ final class ActivateValidator implements ValidatorInterface
     /** @var string */
     private $exportErrors;
 
+    /** @var string */
+    private $exportErrorCode;
+
     public function __construct(
         LoggerInterface $logger,
         Users $users,
         string $exportTo,
-        string $exportErrors = ActionHandler::ATTR_ERRORS
+        string $exportErrors = ActionHandler::ATTR_ERRORS,
+        string $exportErrorCode = ActionHandler::ATTR_ERROR_CODE
     ) {
         $this->logger = $logger;
         $this->users = $users;
         $this->exportTo = $exportTo;
         $this->exportErrors = $exportErrors;
+        $this->exportErrorCode = $exportErrorCode;
     }
 
     public function __invoke(ServerRequestInterface $request): ServerRequestInterface
     {
-        $user = null;
         $errors = [];
         $payload = $this->validateFields([self::TOKEN], $request, $errors);
 
-        if (empty($errors)) {
-            if (!$user = $this->users->byToken($payload[self::TOKEN])) {
-                $errors[self::TOKEN][] = 'Activation token not found.';
-            }
+        $token = $payload[self::TOKEN];
+        if ($token && !$user = $this->users->byToken($token)) {
+            $errors[self::TOKEN][] = 'Not found.';
+            $errorCode = self::STATUS_NOT_FOUND;
         }
 
-        return is_null($user)
-            ? $request->withAttribute($this->exportErrors, $errors)
-            : $request->withAttribute($this->exportTo, $payload + ['user' => $user]);
+        return empty($errors)
+            ? $request->withAttribute($this->exportTo, $payload + ['user' => $user])
+            : $request->withAttribute($this->exportErrors, $errors)
+                ->withAttribute($this->exportErrorCode, $errorCode ?? null);
     }
 
     private function validateVt(string $name, $value): RandomToken

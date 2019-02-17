@@ -4,16 +4,11 @@ declare(strict_types=1);
 
 namespace Oro\Security\Api\Register;
 
-use Assert\Assertion;
-use Oro\Security\Api\AbstractUserAction;
 use Oro\Security\Api\MessageResponder;
 use Oro\Security\Api\UserActionTrait;
 use Oroshi\Core\Middleware\Action\ActionInterface;
 use Oroshi\Core\Middleware\ActionHandler;
-use Oroshi\Core\Middleware\ValidationInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Zend\Diactoros\Response\JsonResponse;
 
 final class RegisterAction implements ActionInterface
 {
@@ -44,17 +39,6 @@ final class RegisterAction implements ActionInterface
         return $request->withAttribute(
             ActionHandler::ATTR_VALIDATOR,
             [RegisterValidator::class, [':exportTo' => self::ATTR_PAYLOAD]]
-        );
-    }
-
-    public function handleError(ServerRequestInterface $request): ServerRequestInterface
-    {
-        return $request->withAttribute(
-            ActionHandler::ATTR_RESPONDER,
-            [MessageResponder::class, [
-                ':message' => 'Invalid request data.',
-                ':statusCode' => self::STATUS_UNPROCESSABLE_ENTITY
-            ]]
         );
     }
 }

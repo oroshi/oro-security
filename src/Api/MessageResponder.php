@@ -30,10 +30,14 @@ final class MessageResponder implements ResponderInterface
     public function respondToJson(ServerRequestInterface $request): ResponseInterface
     {
         $errors = $request->getAttribute(ActionHandler::ATTR_ERRORS, []);
+        if (!empty($errors)) {
+            $errorCode = $request->getAttribute(ActionHandler::ATTR_ERROR_CODE, self::STATUS_UNPROCESSABLE_ENTITY);
+        }
+
         return new JsonResponse(
             ['message' => $this->message] +
             (!empty($errors) ? ['errors' => $errors] : []),
-            $this->statusCode
+            $errorCode ?? $this->statusCode
         );
     }
 

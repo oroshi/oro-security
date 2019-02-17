@@ -8,7 +8,6 @@ use Oro\Security\Api\MessageResponder;
 use Oro\Security\Api\UserActionTrait;
 use Oroshi\Core\Middleware\ActionHandler;
 use Oroshi\Core\Middleware\Action\ActionInterface;
-use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 
 final class ActivateAction implements ActionInterface
@@ -40,17 +39,6 @@ final class ActivateAction implements ActionInterface
         return $request->withAttribute(
             ActionHandler::ATTR_VALIDATOR,
             [ActivateValidator::class, [':exportTo' => self::ATTR_PAYLOAD]]
-        );
-    }
-
-    public function handleError(ServerRequestInterface $request): ServerRequestInterface
-    {
-        return $request->withAttribute(
-            ActionHandler::ATTR_RESPONDER,
-            [MessageResponder::class, [
-                ':message' => 'Invalid request data.',
-                ':statusCode' => self::STATUS_UNPROCESSABLE_ENTITY
-            ]]
         );
     }
 

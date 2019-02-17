@@ -48,15 +48,4 @@ final class LoginAction implements ActionInterface
             [LoginValidator::class, [':exportTo' => self::ATTR_PAYLOAD]]
         );
     }
-
-    public function handleError(ServerRequestInterface $request): ServerRequestInterface
-    {
-        return $request->withAttribute(
-            ActionHandler::ATTR_RESPONDER,
-            [MessageResponder::class, [
-                ':message' => 'Invalid request data.',
-                ':statusCode' => self::STATUS_UNPROCESSABLE_ENTITY
-            ]]
-        );
-    }
 }

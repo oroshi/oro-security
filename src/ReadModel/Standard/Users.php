@@ -13,16 +13,16 @@ final class Users
     const REPOSITORY_KEY = 'oro.security.user.standard';
 
     /** @var UserRepository */
-    private $userRepo;
+    private $userRepository;
 
     public function __construct(RepositoryMap $repositoryMap)
     {
-        $this->userRepo = $repositoryMap->get(self::REPOSITORY_KEY);
+        $this->userRepository = $repositoryMap->get(self::REPOSITORY_KEY);
     }
 
     public function byId(string $id): ?User
     {
-        return $this->userRepo->findById($id);
+        return $this->userRepository->findById($id);
     }
 
     public function byUsername(string $username): ?User
@@ -49,7 +49,7 @@ final class Users
 
     private function selectOne(array $query): ?User
     {
-        $foundUsers = $this->userRepo
+        $foundUsers = $this->userRepository
             ->search(Elasticsearch6Query::fromNative(['query' => $query]), 0, 1)
             ->getIterator();
 
