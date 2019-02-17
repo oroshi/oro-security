@@ -47,7 +47,7 @@ final class ResourceAction implements ActionInterface
         return $request->withAttribute(
             ActionHandler::ATTR_RESPONDER,
             [MessageResponder::class, [
-                ':message' => 'Invalid user request data.',
+                ':message' => 'Invalid request data.',
                 ':statusCode' => self::STATUS_UNPROCESSABLE_ENTITY
             ]]
         );

@@ -28,7 +28,6 @@ final class ActivateAction implements ActionInterface
         } catch (\Exception $error) {
             $errMsg = 'Unexpected error occured during activation.';
             $this->logger->error($errMsg, ['exception' => $error]);
-
             $responder = MessageResponder::class;
             $params = [':message' => $errMsg, ':statusCode' => self::STATUS_INTERNAL_SERVER_ERROR];
         }
@@ -49,7 +48,7 @@ final class ActivateAction implements ActionInterface
         return $request->withAttribute(
             ActionHandler::ATTR_RESPONDER,
             [MessageResponder::class, [
-                ':message' => 'Invalid activation request data.',
+                ':message' => 'Invalid request data.',
                 ':statusCode' => self::STATUS_UNPROCESSABLE_ENTITY
             ]]
         );

@@ -43,18 +43,18 @@ final class UserService
         $this->users = $users;
     }
 
-    public function register(array $userInfos, UserRole $role = null): RegisterUser
+    public function register(array $payload, UserRole $role = null): RegisterUser
     {
-        Assertion::keyIsset($userInfos, 'password');
-        $userInfos = array_merge($userInfos, [
+        Assertion::keyIsset($payload, 'password');
+        $payload = array_merge($payload, [
             'role' => (string)($role ?? 'user'),
-            'aggregateId' => 'oro.security.user-'.Uuid::generate(),
-            'passwordHash' => (string)PasswordHash::gen($userInfos['password']),
+            'aggregateId' => 'oro.security.user-'.Uuid::uuid4(),
+            'passwordHash' => (string)PasswordHash::gen($payload['password']),
             'authTokenExpiresAt' => gmdate(Timestamp::NATIVE_FORMAT, $this->getTokenExpiryTime())
         ]);
-        $userRegistration = RegisterUser::fromNative($userInfos);
-        $this->dispatch($userRegistration);
-        return $userRegistration;
+        $registerUser = RegisterUser::fromNative($payload);
+        $this->dispatch($registerUser);
+        return $registerUser;
     }
 
     public function activate(User $user): void

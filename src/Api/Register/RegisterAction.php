@@ -32,7 +32,6 @@ final class RegisterAction implements ActionInterface
         } catch (\Exception $error) {
             $errorMsg = 'An unexpected error occured during registration.';
             $this->logger->error($errorMsg, ['exception' => $error]);
-
             $responder = MessageResponder::class;
             $params = [':message' => $errorMsg, ':statusCode' => self::STATUS_INTERNAL_SERVER_ERROR];
         }
@@ -53,7 +52,7 @@ final class RegisterAction implements ActionInterface
         return $request->withAttribute(
             ActionHandler::ATTR_RESPONDER,
             [MessageResponder::class, [
-                ':message' => 'Invalid registration request data.',
+                ':message' => 'Invalid request data.',
                 ':statusCode' => self::STATUS_UNPROCESSABLE_ENTITY
             ]]
         );

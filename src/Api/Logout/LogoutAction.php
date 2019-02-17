@@ -37,7 +37,7 @@ final class LogoutAction implements ActionInterface
         return $request->withAttribute(
             ActionHandler::ATTR_RESPONDER,
             [MessageResponder::class, [
-                ':message' => 'Invalid logout request.',
+                ':message' => 'Invalid request data.',
                 ':statusCode' => self::STATUS_UNPROCESSABLE_ENTITY
             ]]
         );
