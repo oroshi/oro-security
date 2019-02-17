@@ -9,6 +9,7 @@ use Daikon\Interop\FromToNativeTrait;
 
 /**
  * @map(aggregateId, Daikon\EventSourcing\Aggregate\AggregateId::fromNative)
+ * @map(knownAggregateRevision, Daikon\EventSourcing\Aggregate\AggregateRevision::fromNative)
  */
 final class RegisterUser extends Command
 {
