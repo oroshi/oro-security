@@ -25,10 +25,10 @@ final class RegisterAction implements ActionInterface
             $responder = RegisterResponder::class;
             $params = [':registration' => $registration];
         } catch (\Exception $error) {
-            $errorMsg = 'An unexpected error occured during registration.';
-            $this->logger->error($errorMsg, ['exception' => $error]);
+            $message = 'An unexpected error occured during registration.';
+            $this->logger->error($message, ['exception' => $error]);
             $responder = MessageResponder::class;
-            $params = [':message' => $errorMsg, ':statusCode' => self::STATUS_INTERNAL_SERVER_ERROR];
+            $params = [':message' => $message, ':statusCode' => self::STATUS_INTERNAL_SERVER_ERROR];
         }
 
         return $request->withAttribute(ActionHandler::ATTR_RESPONDER, [$responder, $params]);

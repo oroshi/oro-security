@@ -25,10 +25,10 @@ final class ActivateAction implements ActionInterface
             $responder = ActivateResponder::class;
             $params = [':user' => $user];
         } catch (\Exception $error) {
-            $errMsg = 'Unexpected error occured during activation.';
-            $this->logger->error($errMsg, ['exception' => $error]);
+            $message = 'Unexpected error occured during activation.';
+            $this->logger->error($message, ['exception' => $error]);
             $responder = MessageResponder::class;
-            $params = [':message' => $errMsg, ':statusCode' => self::STATUS_INTERNAL_SERVER_ERROR];
+            $params = [':message' => $message, ':statusCode' => self::STATUS_INTERNAL_SERVER_ERROR];
         }
 
         return $request->withAttribute(ActionHandler::ATTR_RESPONDER, [$responder, $params]);

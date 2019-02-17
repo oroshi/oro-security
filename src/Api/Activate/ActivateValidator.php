@@ -63,7 +63,7 @@ final class ActivateValidator implements ValidatorInterface
         return empty($errors)
             ? $request->withAttribute($this->exportTo, $payload + ['user' => $user])
             : $request->withAttribute($this->exportErrors, $errors)
-                ->withAttribute($this->exportErrorCode, $errorCode ?? null);
+                ->withAttribute($this->exportErrorCode, $errorCode ?? self::STATUS_UNPROCESSABLE_ENTITY);
     }
 
     private function validateVt(string $name, $value): RandomToken

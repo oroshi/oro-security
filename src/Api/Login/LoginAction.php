@@ -31,11 +31,11 @@ final class LoginAction implements ActionInterface
                 $params = [':message' => 'Failed to login user.', ':statusCode' => self::STATUS_UNAUTHORIZED];
             }
         } catch (\Exception $error) {
-            $errMsg = 'Unexpected error occured during login.';
-            $this->logger->error($errMsg, ['exception' => $error->getMessage()]);
+            $message = 'Unexpected error occured during login.';
+            $this->logger->error($message, ['exception' => $error->getMessage()]);
             sleep(2);
             $responder = MessageResponder::class;
-            $params = [':message' => $errMsg, ':statusCode' => self::STATUS_INTERNAL_SERVER_ERROR];
+            $params = [':message' => $message, ':statusCode' => self::STATUS_INTERNAL_SERVER_ERROR];
         }
 
         return $request->withAttribute(ActionHandler::ATTR_RESPONDER, [$responder, $params]);
