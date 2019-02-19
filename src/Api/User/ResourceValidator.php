@@ -69,7 +69,7 @@ final class ResourceValidator implements ValidatorInterface
         }
 
         return empty($errors)
-            ? $request->withAttribute($this->exportTo, $payload + ['user' => $user])
+            ? $request->withAttribute($this->exportTo, ['user' => $user] + $payload)
             : $request->withAttribute($this->exportErrors, $errors)
                 ->withAttribute($this->exportErrorCode, $errorCode ?? self::STATUS_UNPROCESSABLE_ENTITY);
     }
