@@ -9,10 +9,10 @@ use Daikon\Interop\ValueObjectInterface;
 
 final class UserRole implements ValueObjectInterface
 {
-    private const NIL = '';
+    public const DEFAULT = 'user';
 
     private const ROLES = [
-        'user',
+        self::DEFAULT,
         'administrator'
     ];
 
@@ -20,8 +20,8 @@ final class UserRole implements ValueObjectInterface
 
     public static function fromNative($nativeValue): ValueObjectInterface
     {
-        Assertion::nullOrInArray($nativeValue, self::ROLES);
-        return $nativeValue ? new self($nativeValue) : self::makeEmpty();
+        Assertion::inArray($nativeValue, self::ROLES);
+        return new self($nativeValue);
     }
 
     public function toNative()
@@ -29,20 +29,10 @@ final class UserRole implements ValueObjectInterface
         return $this->role;
     }
 
-    public static function makeEmpty(): ValueObjectInterface
-    {
-        return new self(self::NIL);
-    }
-
     public function equals(ValueObjectInterface $otherValue): bool
     {
-        Assertion::isInstanceOf($otherValue, UserRole::class);
+        Assertion::isInstanceOf($otherValue, self::class);
         return $this->toNative() === $otherValue->toNative();
-    }
-
-    public function isEmpty(): bool
-    {
-        return $this->role === self::NIL;
     }
 
     public function __toString(): string

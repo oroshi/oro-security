@@ -12,7 +12,6 @@ use Oroshi\Core\Middleware\Action\ValidatorInterface;
 use Oroshi\Core\Middleware\Action\ValidatorTrait;
 use Psr\Http\Message\ServerRequestInterface;
 use Psr\Log\LoggerInterface;
-use Stringy\Stringy;
 
 final class RegisterValidator implements ValidatorInterface
 {
@@ -65,7 +64,7 @@ final class RegisterValidator implements ValidatorInterface
         return empty($errors)
             ? $request->withAttribute($this->exportTo, $payload)
             : $request->withAttribute($this->exportErrors, $errors)
-                ->withAttribute($this->exportErrorCode, $errorCode ?? self::STATUS_UNPROCESSABLE_ENTITY);
+                ->withAttribute($this->exportErrorCode, self::STATUS_UNPROCESSABLE_ENTITY);
     }
 
     private function validateUsername(string $name, $value): string
@@ -78,7 +77,7 @@ final class RegisterValidator implements ValidatorInterface
             ->betweenLength(
                 self::NAME_MIN,
                 self::NAME_MAX,
-                sprintf("Must be between %d and %d characters.", self::NAME_MIN, self::NAME_MAX)
+                sprintf('Must be between %d and %d characters.', self::NAME_MIN, self::NAME_MAX)
             )
             ->verifyNow();
         return $value;
@@ -94,7 +93,7 @@ final class RegisterValidator implements ValidatorInterface
             ->betweenLength(
                 self::PWD_MIN,
                 self::PWD_MAX,
-                sprintf("Must be between %d and %d characters.", self::PWD_MIN, self::PWD_MAX)
+                sprintf('Must be between %d and %d characters.', self::PWD_MIN, self::PWD_MAX)
             )
             ->verifyNow();
         return $value;

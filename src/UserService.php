@@ -18,7 +18,6 @@ use Oro\Security\User\Login\LoginUser;
 use Oro\Security\User\Logout\LogoutUser;
 use Oro\Security\User\Register\RegisterUser;
 use Oro\Security\ValueObject\PasswordHash;
-use Oro\Security\ValueObject\RandomToken;
 use Oro\Security\ValueObject\UserRole;
 
 final class UserService
@@ -43,11 +42,11 @@ final class UserService
         $this->users = $users;
     }
 
-    public function register(array $payload, UserRole $role = null): RegisterUser
+    public function register(array $payload): RegisterUser
     {
         Assertion::keyIsset($payload, 'password');
         $payload = array_merge($payload, [
-            'role' => (string)($role ?? 'user'),
+            'role' => UserRole::DEFAULT,
             'aggregateId' => 'oro.security.user-'.Uuid::uuid4(),
             'passwordHash' => (string)PasswordHash::gen($payload['password']),
             'authTokenExpiresAt' => gmdate(Timestamp::NATIVE_FORMAT, $this->getTokenExpiryTime())

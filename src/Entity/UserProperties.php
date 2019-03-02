@@ -8,7 +8,6 @@ use Daikon\Entity\Entity\Attribute;
 use Daikon\Entity\Entity\AttributeMap;
 use Daikon\Entity\Entity\Entity;
 use Daikon\Entity\ValueObject\Email;
-use Daikon\Entity\ValueObject\IntValue;
 use Daikon\Entity\ValueObject\Text;
 use Daikon\EventSourcing\Aggregate\AggregateId;
 use Daikon\EventSourcing\Aggregate\AggregateRevision;

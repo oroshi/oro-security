@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Oro\Security\Middleware;
 
-use function GuzzleHttp\Psr7\parse_query;
 use Daikon\Config\ConfigProviderInterface;
 use Firebase\JWT\BeforeValidException;
 use Firebase\JWT\ExpiredException;
